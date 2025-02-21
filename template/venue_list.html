@@ -1,0 +1,50 @@
+{% extends 'provider_header.html' %}
+{% block content %}
+
+<div class="container mt-5">
+    <h2 class="text-center text-primary mb-4">Manage Venues</h2>
+
+    <div class="row">
+        {% for venue in venues %}
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card shadow-sm h-100">
+                {% if venue.image %}
+                <img src="{{ venue.image.url }}" class="card-img-top venue-img" alt="Venue Image">
+                {% endif %}
+                <div class="card-body text-center">
+                    <h5 class="card-title">{{ venue.name }}</h5>
+                    <p class="card-text text-muted">{{ venue.description }}</p>
+                    <p><strong>📍 Location:</strong> {{ venue.location }}</p>
+                    <p><strong>💰 Price:</strong> RS {{ venue.price }}</p>
+                </div>
+                <div class="card-footer d-flex justify-content-between">
+                    <a href="{% url 'edit_venue' venue.id %}" class="btn btn-warning btn-sm">✏️ Edit</a>
+                    <a href="{% url 'delete_venue' venue.id %}" class="btn btn-danger btn-sm">🗑️ Delete</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-center text-muted">No venues added yet.</p>
+        {% endfor %}
+    </div>
+
+    <div class="text-center mt-4">
+        <a href="{% url 'add_venue' %}" class="btn btn-success">➕ Add New Venue</a>
+    </div>
+</div>
+
+<style>
+    .venue-img {
+        height: 200px;
+        object-fit: cover;
+    }
+    .card {
+        border-radius: 10px;
+        transition: transform 0.3s ease-in-out;
+    }
+    .card:hover {
+        transform: scale(1.03);
+    }
+</style>
+
+{% endblock %}

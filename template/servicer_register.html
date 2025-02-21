@@ -1,0 +1,158 @@
+{% extends 'login_header.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg p-4" style="border-radius: 10px; background-color: #f8f9fa;">
+                <h2 class="text-center mb-4" style="color: #0056b3;">Service Provider Registration</h2>
+
+                <form method="POST">
+                    {% csrf_token %}
+
+                    <div class="mb-2">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" class="form-control form-control-sm" id="username" name="username" placeholder="Enter your username" required>
+                    </div>
+                    
+                    <div class="mb-2">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control form-control-sm" id="email" name="email" placeholder="Enter your email" required>
+                    </div>
+
+                    <div class="mb-2">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control form-control-sm" id="password" name="password" placeholder="Enter a strong password" required>
+                    </div>
+
+                    <div class="mb-2">
+                        <label for="confirm_password" class="form-label">Confirm Password</label>
+                        <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Confirm your password" required>
+                    </div>
+
+                    <div class="mb-2">
+                        <label for="company_name" class="form-label">Company Name</label>
+                        <input type="text" class="form-control form-control-sm" id="company_name" name="company_name" placeholder="Enter your company name" required>
+                    </div>
+                    <div class="mb-2">
+                        <label for="address" class="form-label">Company Address</label>
+                        <input type="text" class="form-control form-control-sm" id="address" name="address" placeholder="Enter your company address" required>
+                    </div>
+                    <div class="mb-2">
+                        <label for="phone" class="form-label">Phone</label>
+                        <input type="text" class="form-control form-control-sm" id="phone" name="phone" placeholder="Enter your phone" required>
+                    </div>
+                    
+                    <!-- Service Type Selection -->
+                    <div class="mb-3">
+                        <label class="form-label">Select Your Service Type</label>
+                        <div class="service-grid">
+                            <div class="service-option" data-value="photo_videography">
+                                📷 <br><span>Photo & Video</span>
+                            </div>
+                            <div class="service-option" data-value="event_planners">
+                                🎊 <br><span>Event Planning</span>
+                            </div>
+                            <div class="service-option" data-value="catering">
+                                🍽️ <br><span>Catering</span>
+                            </div>
+                            <div class="service-option" data-value="bride_groom_service">
+                                👰 <br><span>Bride & Groom</span>
+                            </div>
+                            <div class="service-option" data-value="decoration">
+                                🎨 <br><span>Decoration</span>
+                            </div>
+                            <div class="service-option" data-value="venue_planners">
+                                🏛️ <br><span>Venue Planning</span>
+                            </div>
+                            <div class="service-option" data-value="transportation">
+                                🚗 <br><span>Transport</span>
+                            </div>
+                        </div>
+                        <input type="hidden" name="service_type" id="selected_service_type">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-sm w-100">Register</button>
+                </form>
+
+                <div class="mt-2 text-center">
+                    <p style="font-size: 12px;">Already a service provider? <a href="{% url 'servicer_login' %}" class="text-dark"><strong>Login here</strong></a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript for Selection -->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        let serviceOptions = document.querySelectorAll(".service-option");
+        let hiddenInput = document.getElementById("selected_service_type");
+
+        serviceOptions.forEach(option => {
+            option.addEventListener("click", function() {
+                serviceOptions.forEach(o => o.classList.remove("selected-service"));
+                this.classList.add("selected-service");
+                hiddenInput.value = this.getAttribute("data-value");
+            });
+        });
+    });
+</script>
+
+<!-- CSS for Smaller Service Selection with Names -->
+<style>
+    .service-grid {
+        display: flex;
+        gap: 5px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .service-option {
+        padding: 6px;
+        font-size: 14px;
+        border: 2px solid #0056b3;
+        border-radius: 8px;
+        width: 70px;
+        height: 65px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+        background-color: #f8f9fa;
+        text-align: center;
+        font-weight: bold;
+    }
+
+    .service-option:hover {
+        background-color: #0056b3;
+        color: white;
+        transform: scale(1.1);
+    }
+
+    .selected-service {
+        background-color: #0056b3 !important;
+        color: white !important;
+    }
+
+    .service-option span {
+        font-size: 10px;
+    }
+
+    .form-control-sm {
+        font-size: 14px;
+        padding: 4px 8px;
+    }
+
+    .btn-sm {
+        font-size: 14px;
+        padding: 6px;
+    }
+</style>
+
+{% endblock %}
+
+

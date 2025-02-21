@@ -1,0 +1,31 @@
+{% extends 'provider_header.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">My Bridal & Groom Packages</h2>
+    <a href="{% url 'add_bridal_groom' %}" class="btn btn-success mb-3">Add New Package</a>
+    <div class="row">
+        {% for service in services %}
+        <div class="col-md-4 d-flex align-items-stretch"> <!-- Equal height columns -->
+            <div class="card h-100 shadow-sm">
+                {% if service.image %}
+                <img src="{{ service.image.url }}" class="card-img-top" alt="Bridal Groom Image" style="height: 100%; width: 100%; object-fit: cover;">
+                {% endif %}
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">{{ service.package_name }}</h5>
+                    <p class="card-text"><strong>Details:</strong> {{ service.package_details }}</p>
+                    <p class="card-text flex-grow-1">{{ service.desc }}</p> <!-- Adjusts height dynamically -->
+                    <p class="card-text"><strong>Price:</strong> Rs. {{ service.price }}</p>
+                    <div class="mt-auto"> <!-- Push buttons to the bottom -->
+                        <a href="{% url 'edit_bridal_groom' service.id %}" class="btn btn-warning btn-sm">Edit</a>
+                        <a href="{% url 'delete_bridal_groom' service.id %}" class="btn btn-danger btn-sm">Delete</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-center">No Bridal & Groom packages available.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

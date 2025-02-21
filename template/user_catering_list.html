@@ -1,0 +1,63 @@
+{% extends 'header.html' %}
+{% block content %}
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Available Catering Services</h2>
+    <div class="row">
+        {% for catering in caterings %}
+        <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+            <div class="card shadow-sm catering-card">
+                {% if catering.images %}
+                <img src="{{ catering.images.url }}" class="card-img-top catering-img" alt="Catering Image">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ catering.menu_name }}</h5>
+                    <p class="card-text"><strong>Desc:</strong> {{ catering.desc }}</p>
+                    <p class="card-text"><strong>Price:</strong> Rs. {{ catering.price }}</p>
+                </div>
+                <div class="card-footer text-center">
+                    <a href="{% url 'book_catering' catering.id %}" class="btn btn-primary">📅 Book Now</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-center text-muted">No catering services available.</p>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+    .catering-card {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        border-radius: 12px;
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    }
+    .catering-card:hover {
+        transform: scale(1.03);
+        box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+    }
+    .catering-img {
+        height: 200px; /* Fixed image height */
+        object-fit: cover; /* Uniform scaling */
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
+    }
+    .card-body {
+        flex-grow: 1; /* Ensures consistent height */
+    }
+    .card-footer {
+        background: #fff;
+        border-top: 1px solid #ddd;
+        padding: 10px;
+    }
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+</style>
+
+{% endblock %}

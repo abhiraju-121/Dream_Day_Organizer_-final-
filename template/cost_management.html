@@ -1,0 +1,156 @@
+{% extends 'header.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cost Management</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h2, h3 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        .box {
+            background: #ffffff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+        }
+        .budget-summary {
+            text-align: center;
+            font-size: 18px;
+        }
+        .budget-summary .remaining-budget {
+            font-size: 22px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .negative {
+            color: red;
+        }
+        .positive {
+            color: green;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th {
+            background: #3498db;
+            color: #fff;
+            padding: 10px;
+        }
+        td {
+            text-align: center;
+            padding: 8px;
+        }
+        tr:hover {
+            background: #f1f1f1;
+        }
+        .btn {
+            background: #27ae60;
+            color: white;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+        .btn:hover {
+            background: #218c53;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>💰 Cost Management</h2>
+
+        <!-- Set or Update Budget -->
+        <div class="box">
+            <h3>📊 Set Your Budget</h3>
+            <form method="POST">
+                {% csrf_token %}
+                <input type="number" id="budget_input" name="budget_amount" value="{{ user_budget.amount }}" required>
+                <button type="submit" class="btn">💾 Save</button>
+            </form>
+        </div>
+
+        <!-- Budget Overview -->
+        <div class="box budget-summary">
+            <h3>📊 Budget Summary</h3>
+            <p><strong>Your Budget:</strong> $<span id="budget_amount">{{ user_budget.amount }}</span></p>
+            <p><strong>Total Spent:</strong> $<span id="total_spent">{{ total_spent }}</span></p>
+            <p class="remaining-budget {% if remaining_budget < 0 %}negative{% else %}positive{% endif %}">
+                <strong>Remaining Budget:</strong> $<span id="remaining_budget">{{ remaining_budget }}</span>
+            </p>
+        </div>
+
+        <!-- Cost Breakdown by Service -->
+        <div class="box">
+            <h3>📌 Cost Breakdown by Service</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>📌 Service</th>
+                        <th>💵 Amount Spent</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for service in service_costs %}
+                        <tr>
+                            <td>{{ service.booking_type|title }}</td>
+                            <td>Rs. <span class="amount">{{ service.total_spent }}</span></td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="2">No services booked yet.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Dynamically update remaining budget color
+        document.addEventListener("DOMContentLoaded", function () {
+            let remainingBudget = parseFloat(document.getElementById("remaining_budget").innerText);
+            let remainingElement = document.getElementById("remaining_budget").parentNode;
+
+            if (remainingBudget < 0) {
+                remainingElement.classList.add("negative");
+                remainingElement.classList.remove("positive");
+            } else {
+                remainingElement.classList.add("positive");
+                remainingElement.classList.remove("negative");
+            }
+        });
+    </script>
+
+</body>
+</html>
+
+
+{% endblock %}
