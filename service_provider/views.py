@@ -5,6 +5,13 @@ from django.contrib import messages
 from . models import ServiceProvider
 from user.models import User,Event,BookEvent,Venue,VenueBooking,TransportationBooking,TransportationService,CateringService,CateringBooking,DecorationsBooking,DecorationsService,PhotographyBooking,PhotographyService,BridalGroomServiceBooking,BridalGroomService
 from django.contrib.auth import authenticate,login,logout
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.models import User
+from .models import ServiceProvider
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+
 
 
 # Create your views here.
@@ -64,15 +71,6 @@ def servicer_logout(request):
     logout(request)
     return redirect('servicer_login')   
 
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib import messages
-from django.contrib.auth import update_session_auth_hash
-from django.contrib.auth.models import User
-from .models import ServiceProvider
-from django.contrib.auth import get_user_model
-
-User = get_user_model()
 
 @login_required
 def provider_profile(request):
